@@ -1,0 +1,23 @@
+name: Add issue to the PH tracking project
+
+on:
+  issues:
+    types:
+      - opened
+
+jobs:
+  add-to-project:
+    name: Add issue to PH eng project
+    runs-on: ubuntu-latest
+    steps:
+      - uses: tibdex/github-app-token@f717b5ecd4534d3c4df4ce9b5c1c2214f0f7cd06
+        name: Generate token
+        id: generate_token
+        with:
+          app_id: ${{ secrets.PI_AUTOMATION_TEST_APP_ID }}
+          private_key: ${{ secrets.PI_AUTOMATION_TEST_APP_PEM }}
+      - uses: actions/add-to-project@main
+        name: Add issue to project
+        with:
+          project-url: https://github.com/users/fermion/projects/2/views/1
+          github-token: ${{ steps.generate_token.outputs.token }}
